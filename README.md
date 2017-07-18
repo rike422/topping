@@ -1,4 +1,4 @@
-# Topping
+# Topping [![Gem Version](https://badge.fury.io/rb/topping.svg)](https://badge.fury.io/rb/topping) [![Build Status](https://travis-ci.org/rike422/topping.svg?branch=master)](https://travis-ci.org/rike422/topping) 
 
 Configuration library for like a [Lita](https://github.com/litaio/lita) style application 
 
