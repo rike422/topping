@@ -1,5 +1,4 @@
-# Topping [![Gem Version](https://badge.fury.io/rb/topping.svg)](https://badge.fury.io/rb/topping) [![Build Status](https://travis-ci.org/rike422/topping.svg?branch=master)](https://travis-ci.org/rike422/topping) [![Code Climate](https://codeclimate.com/github/rike422/topping/badges/gpa.svg)](https://codeclimate.com/github/rike422/topping)
-
+# Topping [![Gem Version](https://badge.fury.io/rb/topping.svg)](https://badge.fury.io/rb/topping) [![Build Status](https://travis-ci.org/rike422/topping.svg?branch=master)](https://travis-ci.org/rike422/topping) [![Code Climate](https://codeclimate.com/github/rike422/topping/badges/gpa.svg)](https://codeclimate.com/github/rike422/topping) [![Coverage Status](https://coveralls.io/repos/github/rike422/topping/badge.svg?branch=master)](https://coveralls.io/github/rike422/topping?branch=master)
 Configuration library for like a [Lita](https://github.com/litaio/lita) style application 
 
 ## Installation
