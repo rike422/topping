@@ -32,7 +32,7 @@ module Topping
 
       # @api private
       def mapping(klass)
-        keys = Topping::Configurable::HQ.undersocre_namespace(klass)
+        keys = Topping.undersocre_namespace(klass)
         keys.delete(name_space)
         klass_name = keys.pop
 
@@ -63,21 +63,7 @@ module Topping
           self.hq_class = klass
           root_config = ConfigurationBuilder.new
           klass.root = root_config
-          klass.name_space = Topping::Configurable::HQ.undersocre_namespace(klass)
-        end
-
-        def undersocre_namespace(klass)
-          klass.name.split('::').map do |key|
-            Topping::Configurable::HQ.underscore(key)
-          end
-        end
-
-        def underscore(str)
-          str.gsub(/::/, '/').
-            gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2').
-            gsub(/([a-z\d])([A-Z])/, '\1_\2').
-            tr('-', '_').
-            downcase
+          klass.name_space = Topping.undersocre_namespace(klass)
         end
       end
     end
