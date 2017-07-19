@@ -9,5 +9,6 @@ end
 
 module MockApplication
   class Application < MockApplication::BaseApplication
+    config.dir = 'work'
   end
 end

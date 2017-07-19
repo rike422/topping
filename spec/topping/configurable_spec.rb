@@ -4,9 +4,13 @@ describe Topping::Configurable do
   let(:root) { MockApplication::Application }
   let(:net) { MockApplication::Features::Net }
   let(:user) { MockApplication::Features::User }
+
+  before do
+    Topping.build
+  end
+
   describe 'Root config' do
     before do
-      root.build
       root.configure do |c|
         c.store = :redis
         c.name = 'bot_app'
@@ -20,7 +24,6 @@ describe Topping::Configurable do
   end
   describe 'HQ -> leaf' do
     before do
-      root.build
       net.configure do |c|
         c.host = 'rike422.com'
         c.port = 80

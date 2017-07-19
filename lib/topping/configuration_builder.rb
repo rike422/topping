@@ -59,6 +59,12 @@ module Topping
       @name = :root
     end
 
+    # Merges two configuration builders by making one an attribute on the other.
+    # @yield The configuration object
+    def configure
+      yield configuration
+    end
+
     # Builds a {Configuration} object from the attributes defined on the builder.
     # @param object [Configuration] The empty configuration object that will be extended to
     #   create the final form.
@@ -91,10 +97,6 @@ module Topping
       attribute.name = name
 
       children << attribute
-    end
-
-    def configure
-      yield configuration
     end
 
     # rubocop:disable Metrics1/ParameterLists

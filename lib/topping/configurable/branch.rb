@@ -26,6 +26,7 @@ module Topping
 
       module ChildClassMethods
         include Topping::Configurable
+
         def configure(&block)
           configuration_builder.configure(&block)
         end

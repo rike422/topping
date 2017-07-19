@@ -12,6 +12,10 @@ module Topping
       @@root
     end
 
+    def build
+      root.build
+    end
+
     def underscore_namespace(klass)
       klass.name.split('::').map do |key|
         Topping.underscore(key)

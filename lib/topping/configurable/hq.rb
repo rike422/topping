@@ -21,6 +21,7 @@ module Topping
         else
           root.config(*args, **kwargs)
         end
+        build
       end
 
       # Sets a configuration attribute on the application.
