@@ -17,11 +17,19 @@ require 'topping'
 
 module MockApplication
   class BaseApplication
-    include Topping::Configurable::HQ
-    config :app_name, require: true, type: String
+    extend Topping::Configurable::HQ
+    config :store, default: :memory
+    config :name, default: 'myapp'
+    config :dir, type: String
   end
+end
+
+module MockApplication
   class Application < MockApplication::BaseApplication
-	end
+  	config.store = :redis
+  	config.name = 'topping_app'
+  	config.dir = 'work'
+  end
 end
 
 module MockApplication
@@ -42,10 +50,9 @@ module MockApplication
   end
 end
 
-MockApplication::Application.build
+Topping.build
 
 MockApplication::Application.configure do |c|
-  c.app_name = 'my_app'
 	c.features.net.host = 'github.com'
 	c.features.net.port = 80
 	
@@ -77,18 +84,22 @@ require 'topping'
 
 module MockApplication
   class BaseApplication
-    include Topping::Configurable::HQ
-    config :app_name, require: true, type: String
+    extend Topping::Configurable::HQ
+    config :store, default: :memory
+    config :name, default: 'myapp'
+    config :dir, type: String
   end
+end
+
+module MockApplication
   class Application < MockApplication::BaseApplication
-  	config.app_name = 'my_app'
-	end
+  end
 end
 
 module MockApplication
   module Features
     class Base
-      include ::Topping::Configurable::Branch
+      include Topping::Configurable::Branch
     end
     
     class Net < MockApplication::Features::Base
@@ -103,7 +114,7 @@ module MockApplication
   end
 end
 
-MockApplication::Application.build
+Topping.build
 
 MockApplication::Features::Net.configure do |c|
 	c.host = 'github.com'
@@ -115,7 +126,7 @@ MockApplication::Features::User.configure do |c|
 	c.password = 'password'	
 end
 
-p MockApplication::Application.config.app_name 
+p MockApplication::Application.config.name 
 # => 'my_app'
 p MockApplication::Application.config.features.net.host
 # => 'github.com'
