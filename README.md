@@ -16,9 +16,12 @@ gem 'topping'
 require 'topping'
 
 module MockApplication
-  class Application
+  class BaseApplication
     include Topping::Configurable::HQ
+    config :app_name, require: true, type: String
   end
+  class Application < MockApplication::BaseApplication
+	end
 end
 
 module MockApplication
@@ -42,6 +45,7 @@ end
 MockApplication::Application.build
 
 MockApplication::Application.configure do |c|
+  c.app_name = 'my_app'
 	c.features.net.host = 'github.com'
 	c.features.net.port = 80
 	
@@ -50,13 +54,15 @@ MockApplication::Application.configure do |c|
 end
 
 net = MockApplication::Features::Net.new
-user = MockApplication::Features::User.new
+user = MockApplication::Features::User.new 
+
+p MockApplicatio::Application.config.app_name
+# => 'my_app'
 
 p net.config.host 
 # => 'github.com'
 p net.config.port 
 # => 89
-
 p user.config.username
 # => 'akira takahashi'
 p user.config.password
@@ -70,15 +76,19 @@ or
 require 'topping'
 
 module MockApplication
-  class Application
+  class BaseApplication
     include Topping::Configurable::HQ
+    config :app_name, require: true, type: String
   end
+  class Application < MockApplication::BaseApplication
+  	config.app_name = 'my_app'
+	end
 end
 
 module MockApplication
   module Features
     class Base
-      include Topping::Configurable::Branch
+      include ::Topping::Configurable::Branch
     end
     
     class Net < MockApplication::Features::Base
@@ -105,6 +115,8 @@ MockApplication::Features::User.configure do |c|
 	c.password = 'password'	
 end
 
+p MockApplication::Application.config.app_name 
+# => 'my_app'
 p MockApplication::Application.config.features.net.host
 # => 'github.com'
 p MockApplication::Application.config.features.net.port
