@@ -4,6 +4,20 @@ describe Topping::Configurable do
   let(:root) { MockApplication::Application }
   let(:net) { MockApplication::Features::Net }
   let(:user) { MockApplication::Features::User }
+  describe 'Root config' do
+    before do
+      root.build
+      root.configure do |c|
+        c.store = :redis
+        c.name = 'bot_app'
+      end
+    end
+    it 'can get the value set for the root class' do
+      expect(root.config.dir).to eq 'work'
+      expect(root.config.store).to eq :redis
+      expect(root.config.name).to eq 'bot_app'
+    end
+  end
   describe 'HQ -> leaf' do
     before do
       root.build
@@ -42,7 +56,7 @@ describe Topping::Configurable do
       end
     end
 
-    describe 'a validate!d attribute'  do
+    describe 'a validate!d attribute' do
       it 'raises if the validator raises due to an invalid value' do
         expect { root.config.features.net.protocol = :ftp }.to raise_error(Topping::ValidationError)
       end
