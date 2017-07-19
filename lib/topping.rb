@@ -1,11 +1,24 @@
 require 'topping/version'
+require 'topping/configuration_builder'
+require 'topping/errors'
 
 module Topping
   # Your code goes here...
   class << self
-    def undersocre_namespace(klass)
+    # rubocop:disable Style/ClassVars
+    @@root = ConfigurationBuilder.new
+
+    def root
+      @@root
+    end
+
+    def build
+      root.build
+    end
+
+    def underscore_namespace(klass)
       klass.name.split('::').map do |key|
-        Topping::Configurable::HQ.underscore(key)
+        Topping.underscore(key)
       end
     end
 
@@ -20,5 +33,3 @@ module Topping
 end
 
 require 'topping/configurable'
-require 'topping/configuration_builder'
-require 'topping/errors'

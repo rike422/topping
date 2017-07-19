@@ -11,29 +11,29 @@ module Topping
       # @api private
       attr_accessor :name_space
 
-      # Yields the configuration object
-      # @yieldparam [Configuration] config The configuration object.
+      # Sets a configuration attribute on the application.
+      # @return [void]
       # @since 0.0.1
       # @see ConfigurationBuilder#config
-      def configure
-        yield root.configuration.send(name_space.first.to_sym)
+      def config(*args, **kwargs, &block)
+        if block
+          root.config(*args, **kwargs, &block)
+        else
+          root.config(*args, **kwargs)
+        end
+        build
       end
 
-      # User configuration store
-      # @return [Configuration] The root attribute.
+      # Sets a configuration attribute on the application.
+      # @return [void]
       # @since 0.0.1
-      def config
-        root.configuration.send(name_space.first.to_sym)
-      end
-
       def build
-        @root.build
+        root.build
       end
 
       # @api private
       def mapping(klass)
-        keys = Topping.undersocre_namespace(klass)
-        keys.delete(name_space)
+        keys = Topping.underscore_namespace(klass) - name_space
         klass_name = keys.pop
 
         parent = keys.reduce(root) do |memo, key|
@@ -44,15 +44,16 @@ module Topping
         parent.combine(klass_name, klass.configuration_builder)
       end
 
+      def inherited(klass)
+        klass.extend(Topping::Configurable::HQ::ChildClassMethods)
+        klass.root = root
+      end
+
       class << self
         # The top-level Configurable Class
         # @api private
         # @return [Configuration] The root attribute.
         attr_accessor :hq_class
-
-        def included(klass)
-          klass.extend(Topping::Configurable::HQ)
-        end
 
         def mapping(klass)
           hq_class.mapping(klass)
@@ -61,9 +62,31 @@ module Topping
         def extended(klass)
           super
           self.hq_class = klass
-          root_config = ConfigurationBuilder.new
-          klass.root = root_config
-          klass.name_space = Topping.undersocre_namespace(klass)
+          klass.name_space = Topping.underscore_namespace(klass)
+
+          config = Topping.root.config(klass.name_space.first)
+          klass.root = config
+        end
+      end
+
+      module ChildClassMethods
+        # The top-level {ConfigurationBuilder} attribute.
+        # @return [Configuration] The root attribute.
+        attr_accessor :root
+
+        # Yields the configuration object
+        # @yieldparam [Configuration] config The configuration object.
+        # @since 0.0.1
+        # @see ConfigurationBuilder#config
+        def configure
+          yield root.configuration
+        end
+
+        # User configuration store
+        # @return [Configuration] The root attribute.
+        # @since 0.0.1
+        def config
+          root.configuration
         end
       end
     end
