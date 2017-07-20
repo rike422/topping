@@ -28,6 +28,7 @@ describe Topping::Configurable do
         c.host = 'rike422.com'
         c.port = 80
       end
+      Topping.build
       user.configure do |c|
         c.username = 'akira takahashi'
         c.password = 'password'

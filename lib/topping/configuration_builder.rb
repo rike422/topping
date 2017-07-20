@@ -17,6 +17,11 @@ module Topping
     # @api private
     attr_reader :configuration
 
+    # A boolean indicating whether or not the attribute must be set.
+    # @return [Boolean] Whether or not the attribute is required.
+    # @api private
+    attr_accessor :desc
+
     # An array of valid types for the attribute.
     # @return [Array<Object>] The array of valid types.
     # @api private
@@ -108,15 +113,17 @@ module Topping
     #   must be.
     # @param required [Boolean] Whether or not this attribute must be set. If required
     # @param default [Object] An optional default value for the attribute.
+    # @param default [Object] A description for the attribute.
     # @yield A block to be evaluated in the context of the new attribute. Used for
     #   defining nested configuration attributes and validators.
     # @return [void]
-    def config(name, types: nil, type: nil, required: false, default: nil, &block)
+    def config(name, types: nil, type: nil, required: false, default: nil, desc: '', &block)
       attribute = self.class.new
       attribute.name = name
       attribute.types = types || type
       attribute.required = required
       attribute.value = default
+      attribute.desc = desc
       attribute.instance_exec(&block) if block
 
       children << attribute
