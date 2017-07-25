@@ -5,10 +5,6 @@ describe Topping::Configurable do
   let(:net) { MockApplication::Features::Net }
   let(:user) { MockApplication::Features::User }
 
-  before do
-    Topping.build
-  end
-
   describe 'Root config' do
     before do
       root.configure do |c|

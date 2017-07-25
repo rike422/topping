@@ -120,6 +120,9 @@ module Topping
       attribute.instance_exec(&block) if block
 
       children << attribute
+
+      # FIXME: I want remove Topping.build process.
+      Topping.build
       attribute
     end
 
